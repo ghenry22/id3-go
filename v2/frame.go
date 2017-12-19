@@ -552,8 +552,16 @@ func (f *ImageFrame) SetMIMEType(mimeType string) {
 	f.changeSize(diff)
 }
 
+func (f ImageFrame) PictureType() byte {
+	return f.pictureType
+}
+
+func (f ImageFrame) SetPictureType(pictureType byte) {
+	f.pictureType = pictureType
+}
+
 func (f ImageFrame) String() string {
-	return fmt.Sprintf("%s\t%s: <binary data>", f.mimeType, f.description)
+	return fmt.Sprintf("%d\t%s\t%s: <binary data>", f.pictureType, f.mimeType, f.description)
 }
 
 func (f ImageFrame) Bytes() []byte {
