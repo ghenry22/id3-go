@@ -37,7 +37,7 @@ var (
 		"LNK": FrameType{id: "LNK", description: "Linked information", constructor: ParseDataFrame},
 		"MCI": FrameType{id: "MCI", description: "Music CD Identifier", constructor: ParseDataFrame},
 		"MLL": FrameType{id: "MLL", description: "MPEG location lookup table", constructor: ParseDataFrame},
-		"PIC": FrameType{id: "PIC", description: "Attached picture", constructor: ParseDataFrame},
+		"PIC": FrameType{id: "PIC", description: "Attached picture", constructor: ParsePicFrame},
 		"POP": FrameType{id: "POP", description: "Popularimeter", constructor: ParseDataFrame},
 		"REV": FrameType{id: "REV", description: "Reverb", constructor: ParseDataFrame},
 		"RVA": FrameType{id: "RVA", description: "Relative volume adjustment", constructor: ParseDataFrame},

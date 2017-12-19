@@ -47,6 +47,11 @@ func NewTag(version byte) *Tag {
 		t.frameConstructor = ParseV23Frame
 		t.frameHeaderSize = FrameHeaderSize
 		t.frameBytesConstructor = V23Bytes
+	case 4:
+		t.commonMap = V24CommonFrame
+		t.frameConstructor = ParseV24Frame
+		t.frameHeaderSize = FrameHeaderSize
+		t.frameBytesConstructor = V24Bytes
 	default:
 		t.commonMap = V23CommonFrame
 		t.frameConstructor = ParseV23Frame
@@ -312,6 +317,7 @@ func ParseHeader(reader io.Reader) *Header {
 		header.unsynchronization = isBitSet(header.flags, 7)
 		header.compression = isBitSet(header.flags, 6)
 	case 3:
+	case 4:
 		header.unsynchronization = isBitSet(header.flags, 7)
 		header.extendedHeader = isBitSet(header.flags, 6)
 		header.experimental = isBitSet(header.flags, 5)
