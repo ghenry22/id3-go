@@ -28,11 +28,15 @@ func ParseV24Frame(reader io.Reader) Framer {
 	id := string(data[:4])
 	t, ok := V24FrameTypeMap[id]
 	if !ok {
-		return nil
+		t = FrameType{id: id, description: "Unknown frame", constructor: ParseDataFrame}
 	}
 
 	size, err := encodedbytes.SynchInt(data[4:8])
 	if err != nil {
+		return nil
+	}
+
+	if size == 0 {
 		return nil
 	}
 
