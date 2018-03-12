@@ -4,6 +4,7 @@
 package v2
 
 import (
+	"bytes"
 	"github.com/mikkyang/id3-go/encodedbytes"
 	"io"
 )
@@ -32,7 +33,7 @@ func ParseV24Frame(reader io.Reader) Framer {
 		return nil
 	}
 
-	id := string(data[:4])
+	id := string(bytes.Trim(data[:4], "\x00"))
 	t, ok := V24FrameTypeMap[id]
 	if !ok {
 		t = FrameType{id: id, description: "Unknown frame", constructor: ParseDataFrame}
@@ -43,7 +44,7 @@ func ParseV24Frame(reader io.Reader) Framer {
 		return nil
 	}
 
-	if size == 0 {
+	if id == "" && size == 0 {
 		return nil
 	}
 
