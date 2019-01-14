@@ -239,6 +239,10 @@ func (t Tag) Comments() []string {
 	return comments
 }
 
+func (t Tag) Track() string {
+	return t.textFrameText(t.commonMap["Track"])
+}
+
 func (t *Tag) SetTitle(text string) {
 	t.setTextFrameText(t.commonMap["Title"], text)
 }
@@ -257,6 +261,11 @@ func (t *Tag) SetYear(text string) {
 
 func (t *Tag) SetGenre(text string) {
 	t.setTextFrameText(t.commonMap["Genre"], text)
+}
+
+// text: e.g. 11, 11/15
+func (t *Tag) SetTrack(text string) {
+	t.setTextFrameText(t.commonMap["Track"], text)
 }
 
 func (t *Tag) textFrame(ft FrameType) TextFramer {
