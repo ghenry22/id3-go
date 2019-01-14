@@ -22,6 +22,7 @@ type Tagger interface {
 	Year() string
 	Genre() string
 	Comments() []string
+	Track() string
 	SetTitle(string)
 	SetArtist(string)
 	SetAlbum(string)

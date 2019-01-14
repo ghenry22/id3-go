@@ -17,6 +17,7 @@ var (
 		"Year":     V23FrameTypeMap["TYER"],
 		"Genre":    V23FrameTypeMap["TCON"],
 		"Comments": V23FrameTypeMap["COMM"],
+		"Track":    V23FrameTypeMap["TRCK"],
 	}
 
 	// V23DeprecatedTypeMap contains deprecated frame IDs from ID3v2.2

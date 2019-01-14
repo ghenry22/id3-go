@@ -86,6 +86,11 @@ func (t Tag) Comments() []string {
 	return []string{t.comment}
 }
 
+// v1 does not support track
+func (t Tag) Track() string {
+	return ""
+}
+
 func (t *Tag) SetTitle(text string) {
 	t.title = text
 	t.dirty = true

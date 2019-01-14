@@ -239,6 +239,10 @@ func (t Tag) Comments() []string {
 	return comments
 }
 
+func (t Tag) Track() string {
+	return t.textFrameText(t.commonMap["Track"])
+}
+
 func (t *Tag) SetTitle(text string) {
 	t.setTextFrameText(t.commonMap["Title"], text)
 }
