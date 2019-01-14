@@ -263,6 +263,11 @@ func (t *Tag) SetGenre(text string) {
 	t.setTextFrameText(t.commonMap["Genre"], text)
 }
 
+// text: e.g. 11, 11/15
+func (t *Tag) SetTrack(text string) {
+	t.setTextFrameText(t.commonMap["Track"], text)
+}
+
 func (t *Tag) textFrame(ft FrameType) TextFramer {
 	if frame := t.Frame(ft.Id()); frame != nil {
 		if textFramer, ok := frame.(TextFramer); ok {

@@ -122,6 +122,11 @@ func (t *Tag) SetGenre(text string) {
 	t.dirty = true
 }
 
+// v1 does not support track
+func (t *Tag) SetTrack(text string) {
+	return
+}
+
 func (t Tag) Bytes() []byte {
 	data := make([]byte, TagSize)
 
