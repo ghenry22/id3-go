@@ -272,6 +272,10 @@ func (t *Tag) SetTrack(text string) {
 	t.setTextFrameText(t.commonMap["Track"], text)
 }
 
+func (t *Tag) SetAlbumArtist(text string) {
+	t.setTextFrameText(t.commonMap["AlbumArtist"], text)
+}
+
 func (t *Tag) textFrame(ft FrameType) TextFramer {
 	if frame := t.Frame(ft.Id()); frame != nil {
 		if textFramer, ok := frame.(TextFramer); ok {

@@ -30,6 +30,7 @@ type Tagger interface {
 	SetYear(string)
 	SetGenre(string)
 	SetTrack(string)
+	SetAlbumArtist(string)
 	AllFrames() []v2.Framer
 	Frames(string) []v2.Framer
 	Frame(string) v2.Framer

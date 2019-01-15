@@ -132,6 +132,11 @@ func (t *Tag) SetTrack(text string) {
 	return
 }
 
+// v1 does not support album artist
+func (t *Tag) SetAlbumArtist(text string) {
+	return
+}
+
 func (t Tag) Bytes() []byte {
 	data := make([]byte, TagSize)
 
