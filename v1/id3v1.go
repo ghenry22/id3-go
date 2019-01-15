@@ -91,6 +91,11 @@ func (t Tag) Track() string {
 	return ""
 }
 
+// v1 does not support album artist
+func (t Tag) AlbumArtist() string {
+	return ""
+}
+
 func (t *Tag) SetTitle(text string) {
 	t.title = text
 	t.dirty = true

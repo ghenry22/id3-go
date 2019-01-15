@@ -243,6 +243,10 @@ func (t Tag) Track() string {
 	return t.textFrameText(t.commonMap["Track"])
 }
 
+func (t Tag) AlbumArtist() string {
+	return t.textFrameText(t.commonMap["AlbumArtist"])
+}
+
 func (t *Tag) SetTitle(text string) {
 	t.setTextFrameText(t.commonMap["Title"], text)
 }
