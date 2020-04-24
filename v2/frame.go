@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mikkyang/id3-go/encodedbytes"
+	"github.com/arkhipovkm/id3-go/encodedbytes"
 )
 
 const (
