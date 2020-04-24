@@ -6,6 +6,7 @@ package v2
 import (
 	"errors"
 	"fmt"
+
 	"github.com/mikkyang/id3-go/encodedbytes"
 )
 
@@ -550,6 +551,37 @@ func (f *ImageFrame) SetMIMEType(mimeType string) {
 	}
 
 	f.changeSize(diff)
+}
+
+func (f ImageFrame) Description() string {
+	return f.description
+}
+
+func (f *ImageFrame) SetDescription(description string) {
+	diff := len(description) - len(f.description)
+	if description[len(description)-1] != 0 {
+		nullTermBytes := append([]byte(description), 0x00)
+		f.description = string(nullTermBytes)
+		diff += 1
+	} else {
+		f.description = description
+	}
+
+	f.changeSize(diff)
+}
+
+func (f ImageFrame) PictureType() byte {
+	return f.pictureType
+}
+
+func (f *ImageFrame) SetPictureType(pictureType byte) {
+	f.pictureType = pictureType
+}
+
+func (f *ImageFrame) SetData(b []byte) {
+	diff := len(b) - len(f.data)
+	f.changeSize(diff)
+	f.data = b
 }
 
 func (f ImageFrame) String() string {
