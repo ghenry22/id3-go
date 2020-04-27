@@ -219,6 +219,7 @@ func NewTextFrame(ft FrameType, text string) *TextFrame {
 	return &TextFrame{
 		FrameHead: head,
 		text:      text,
+		encoding:  3,
 	}
 }
 
@@ -614,4 +615,22 @@ func (f ImageFrame) Bytes() []byte {
 	}
 
 	return bytes
+}
+
+func NewImageFrame(ft FrameType, mimeType string, pictureType byte, description string, data []byte) *ImageFrame {
+
+	dataFrame := NewDataFrame(ft, data)
+
+	imageFrame := &ImageFrame{
+		DataFrame:   *dataFrame,
+		encoding:    encodedbytes.NativeEncoding,
+		pictureType: pictureType,
+	}
+
+	imageFrame.SetMIMEType(mimeType)
+	if description == "" {
+		description = " "
+	}
+	imageFrame.SetDescription(description)
+	return imageFrame
 }

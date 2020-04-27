@@ -4,6 +4,11 @@
 
 ID3 library for Go.
 
+This is a fork of the original Michael Yang's [id3-go library](https://github.com/mikkyang/id3-go).  
+This fork aims to substitute the hard-to-install [iconv](https://github.com/djimenez/iconv-go) library with native Go encoding libraries.
+
+Some other minor changes are possible, but this fork is 100% retrocompatible with the codebase developed for Michael Yang's one.
+
 Supported formats:
 
 * ID3v1
