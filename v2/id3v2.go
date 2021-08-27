@@ -307,6 +307,9 @@ func ParseHeader(reader io.Reader) *Header {
 		flags:    data[5],
 		size:     size,
 	}
+	if header.version > 3 {
+		header.version = 3
+	}
 
 	switch header.version {
 	case 2:
