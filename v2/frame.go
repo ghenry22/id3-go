@@ -628,6 +628,7 @@ func NewImageFrame(ft FrameType, mimeType string, pictureType byte, description 
 		encoding:    encodedbytes.NativeEncoding,
 		pictureType: pictureType,
 	}
+	imageFrame.changeSize(2) // 1 byte for encoding field + 1 byte for pictureType field
 
 	imageFrame.SetMIMEType(mimeType)
 	if description == "" {
