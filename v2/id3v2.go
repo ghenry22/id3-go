@@ -5,9 +5,10 @@ package v2
 
 import (
 	"fmt"
-	"github.com/mikkyang/id3-go/encodedbytes"
 	"io"
 	"os"
+
+	"github.com/arkhipovkm/id3-go/encodedbytes"
 )
 
 const (
@@ -305,6 +306,9 @@ func ParseHeader(reader io.Reader) *Header {
 		revision: data[4],
 		flags:    data[5],
 		size:     size,
+	}
+	if header.version > 3 {
+		header.version = 3
 	}
 
 	switch header.version {

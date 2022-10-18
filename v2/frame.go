@@ -6,7 +6,8 @@ package v2
 import (
 	"errors"
 	"fmt"
-	"github.com/mikkyang/id3-go/encodedbytes"
+
+	"github.com/arkhipovkm/id3-go/encodedbytes"
 )
 
 const (
@@ -210,14 +211,17 @@ type TextFrame struct {
 }
 
 func NewTextFrame(ft FrameType, text string) *TextFrame {
+	encoding := byte(3)
+	nullLength := encodedbytes.EncodingNullLengthForIndex(encoding)
 	head := FrameHead{
 		FrameType: ft,
-		size:      uint32(1 + len(text)),
+		size:      uint32(1 + len(text) + nullLength),
 	}
 
 	return &TextFrame{
 		FrameHead: head,
 		text:      text,
+		encoding:  encoding,
 	}
 }
 
@@ -285,7 +289,7 @@ func (f TextFrame) Bytes() []byte {
 		return bytes
 	}
 
-	if err = wr.WriteString(f.text, f.encoding); err != nil {
+	if err = wr.WriteNullTermString(f.text, f.encoding); err != nil {
 		return bytes
 	}
 
@@ -383,7 +387,7 @@ func (f DescTextFrame) Bytes() []byte {
 		return bytes
 	}
 
-	if err = wr.WriteString(f.description, f.encoding); err != nil {
+	if err = wr.WriteNullTermString(f.description, f.encoding); err != nil {
 		return bytes
 	}
 
@@ -552,6 +556,37 @@ func (f *ImageFrame) SetMIMEType(mimeType string) {
 	f.changeSize(diff)
 }
 
+func (f ImageFrame) Description() string {
+	return f.description
+}
+
+func (f *ImageFrame) SetDescription(description string) {
+	diff := len(description) - len(f.description)
+	if description[len(description)-1] != 0 {
+		nullTermBytes := append([]byte(description), 0x00)
+		f.description = string(nullTermBytes)
+		diff += 1
+	} else {
+		f.description = description
+	}
+
+	f.changeSize(diff)
+}
+
+func (f ImageFrame) PictureType() byte {
+	return f.pictureType
+}
+
+func (f *ImageFrame) SetPictureType(pictureType byte) {
+	f.pictureType = pictureType
+}
+
+func (f *ImageFrame) SetData(b []byte) {
+	diff := len(b) - len(f.data)
+	f.changeSize(diff)
+	f.data = b
+}
+
 func (f ImageFrame) String() string {
 	return fmt.Sprintf("%s\t%s: <binary data>", f.mimeType, f.description)
 }
@@ -582,4 +617,23 @@ func (f ImageFrame) Bytes() []byte {
 	}
 
 	return bytes
+}
+
+func NewImageFrame(ft FrameType, mimeType string, pictureType byte, description string, data []byte) *ImageFrame {
+
+	dataFrame := NewDataFrame(ft, data)
+
+	imageFrame := &ImageFrame{
+		DataFrame:   *dataFrame,
+		encoding:    encodedbytes.NativeEncoding,
+		pictureType: pictureType,
+	}
+	imageFrame.changeSize(2) // 1 byte for encoding field + 1 byte for pictureType field
+
+	imageFrame.SetMIMEType(mimeType)
+	if description == "" {
+		description = " "
+	}
+	imageFrame.SetDescription(description)
+	return imageFrame
 }

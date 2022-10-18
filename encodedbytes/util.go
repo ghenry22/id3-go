@@ -6,7 +6,10 @@ package encodedbytes
 import (
 	"bytes"
 	"errors"
-	iconv "github.com/djimenez/iconv-go"
+
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/encoding/charmap"
+	"golang.org/x/text/encoding/unicode"
 )
 
 const (
@@ -28,16 +31,25 @@ var (
 		{Name: "UTF-16BE", NullLength: 2},
 		{Name: "UTF-8", NullLength: 1},
 	}
-	Decoders = make([]*iconv.Converter, len(EncodingMap))
-	Encoders = make([]*iconv.Converter, len(EncodingMap))
+	Decoders = make([]*encoding.Decoder, len(EncodingMap))
+	Encoders = make([]*encoding.Encoder, len(EncodingMap))
 )
 
 func init() {
-	n := EncodingForIndex(NativeEncoding)
-	for i, e := range EncodingMap {
-		Decoders[i], _ = iconv.NewConverter(e.Name, n)
-		Encoders[i], _ = iconv.NewConverter(n, e.Name)
-	}
+	// n := EncodingForIndex(NativeEncoding)
+	// for i, e := range EncodingMap {
+	// 	Decoders[i], _ = iconv.NewConverter(e.Name, n)
+	// 	Encoders[i], _ = iconv.NewConverter(n, e.Name)
+	// }
+	Decoders[0] = charmap.ISO8859_1.NewDecoder()
+	Decoders[1] = unicode.UTF16(unicode.BigEndian, unicode.UseBOM).NewDecoder()
+	Decoders[2] = unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM).NewDecoder()
+	Decoders[3] = encoding.Nop.NewDecoder()
+
+	Encoders[0] = charmap.ISO8859_1.NewEncoder()
+	Encoders[1] = unicode.UTF16(unicode.BigEndian, unicode.UseBOM).NewEncoder()
+	Encoders[2] = unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM).NewEncoder()
+	Encoders[3] = encoding.Nop.NewEncoder()
 }
 
 // Form an integer from concatenated bits
@@ -138,12 +150,12 @@ func nullIndex(data []byte, encoding byte) (atIndex, afterIndex int) {
 }
 
 func EncodedDiff(newEncoding byte, newString string, oldEncoding byte, oldString string) (int, error) {
-	newEncodedString, err := Encoders[newEncoding].ConvertString(newString)
+	newEncodedString, err := Encoders[newEncoding].String(newString)
 	if err != nil {
 		return 0, err
 	}
 
-	oldEncodedString, err := Encoders[oldEncoding].ConvertString(oldString)
+	oldEncodedString, err := Encoders[oldEncoding].String(oldString)
 	if err != nil {
 		return 0, err
 	}
