@@ -5,15 +5,17 @@ package id3
 
 import (
 	"bytes"
-	v2 "github.com/mikkyang/id3-go/v2"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	v2 "github.com/ghenry22/id3-go/v2"
 )
 
 const (
-	testFile = "test.mp3"
+	testFile = "C:\\Users\\Kirill\\Source\\Repos\\musify-downloader\\test.mp3"
 )
 
 func TestParse(t *testing.T) {
@@ -274,4 +276,26 @@ func TestUTF16CommPanic(t *testing.T) {
 		}
 		file.Close()
 	}
+}
+
+func TestBuffer(t *testing.T) {
+	data, err := ioutil.ReadFile(testFile)
+	if err != nil {
+		t.Errorf("Error reading test file")
+	}
+	fmt.Printf("Test mp3, read %d bytes\n", len(data))
+	buf, err := ParseBuffer(data)
+	if err != nil {
+		t.Error(err)
+	}
+	buf.SetArtist("Test Artist From Buffer #1")
+	fmt.Println(buf.AllFrames())
+	err = buf.Close()
+	if err != nil {
+		t.Error(err)
+	}
+	newData := buf.GetData()
+	fmt.Printf("Test mp3, about to write %d bytes\n", len(newData))
+	ioutil.WriteFile(testFile+".output.mp3", newData, os.ModePerm)
+	fmt.Println()
 }

@@ -4,6 +4,11 @@
 
 ID3 library for Go.
 
+This is a fork of the original Michael Yang's [id3-go library](https://github.com/mikkyang/id3-go).  
+This fork aims to substitute the hard-to-install [iconv](https://github.com/djimenez/iconv-go) library with native Go encoding libraries.
+
+Some other minor changes are possible, but this fork is 100% retrocompatible with the codebase developed for Michael Yang's one.
+
 Supported formats:
 
 * ID3v1
@@ -14,26 +19,26 @@ Supported formats:
 
 The platform ($GOROOT/bin) "go get" tool is the best method to install.
 
-    go get github.com/mikkyang/id3-go
+    go get github.com/ghenry22/id3-go
 
 This downloads and installs the package into your $GOPATH. If you only want to
 recompile, use "go install".
 
-    go install github.com/mikkyang/id3-go
+    go install github.com/ghenry22/id3-go
 
 # Usage
 
 An import allows access to the package.
 
     import (
-        id3 "github.com/mikkyang/id3-go"
+        id3 "github.com/ghenry22/id3-go"
     )
 
 Version specific details can be accessed through the subpackages.
 
     import (
-        "github.com/mikkyang/id3-go/v1"
-        "github.com/mikkyang/id3-go/v2"
+        "github.com/ghenry22/id3-go/v1"
+        "github.com/ghenry22/id3-go/v2"
     )
 
 # Quick Start
