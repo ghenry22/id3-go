@@ -8,8 +8,8 @@ import (
 	"errors"
 	"os"
 
-	v1 "github.com/arkhipovkm/id3-go/v1"
-	v2 "github.com/arkhipovkm/id3-go/v2"
+	v1 "github.com/ghenry22/id3-go/v1"
+	v2 "github.com/ghenry22/id3-go/v2"
 )
 
 const (

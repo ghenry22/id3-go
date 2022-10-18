@@ -6,8 +6,9 @@ package v2
 import (
 	"errors"
 	"fmt"
+	"strings"
 
-	"github.com/arkhipovkm/id3-go/encodedbytes"
+	"github.com/ghenry22/id3-go/encodedbytes"
 )
 
 const (
@@ -519,6 +520,43 @@ func ParseImageFrame(head FrameHead, data []byte) Framer {
 	return f
 }
 
+func ParsePicFrame(head FrameHead, data []byte) Framer {
+	var err error
+	f := new(ImageFrame)
+	f.FrameHead = head
+	rd := encodedbytes.NewReader(data)
+
+	if f.encoding, err = rd.ReadByte(); err != nil {
+		return nil
+	}
+
+	ext, err := rd.ReadNumBytesString(3)
+	if err != nil {
+		return nil
+	}
+
+	switch strings.ToLower(ext) {
+	case "jpeg", "jpg":
+		f.mimeType = "image/jpeg"
+	case "png":
+		f.mimeType = "image/png"
+	}
+
+	if f.pictureType, err = rd.ReadByte(); err != nil {
+		return nil
+	}
+
+	if f.description, err = rd.ReadNullTermString(f.encoding); err != nil {
+		return nil
+	}
+
+	if f.data, err = rd.ReadRest(); err != nil {
+		return nil
+	}
+
+	return f
+}
+
 func (f ImageFrame) Encoding() string {
 	return encodedbytes.EncodingForIndex(f.encoding)
 }
@@ -588,7 +626,8 @@ func (f *ImageFrame) SetData(b []byte) {
 }
 
 func (f ImageFrame) String() string {
-	return fmt.Sprintf("%s\t%s: <binary data>", f.mimeType, f.description)
+	//return fmt.Sprintf("%s\t%s: <binary data>", f.mimeType, f.description)
+	return fmt.Sprintf("%d\t%s\t%s: <binary data>", f.pictureType, f.mimeType, f.description)
 }
 
 func (f ImageFrame) Bytes() []byte {

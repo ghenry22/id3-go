@@ -1,4 +1,4 @@
-module github.com/arkhipovkm/id3-go
+module github.com/ghenry22/id3-go
 
 go 1.17
 

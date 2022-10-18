@@ -4,9 +4,10 @@
 package v2
 
 import (
+	"bytes"
 	"io"
 
-	"github.com/arkhipovkm/id3-go/encodedbytes"
+	"github.com/ghenry22/id3-go/encodedbytes"
 )
 
 var (
@@ -70,6 +71,9 @@ var (
 		"TCON": FrameType{id: "TCON", description: "Content type", constructor: ParseTextFrame},
 		"TCOP": FrameType{id: "TCOP", description: "Copyright message", constructor: ParseTextFrame},
 		"TDAT": FrameType{id: "TDAT", description: "Date", constructor: ParseTextFrame},
+		"TDOR": FrameType{id: "TDOR", description: "Original release time", constructor: ParseTextFrame},
+		"TDRL": FrameType{id: "TDRL", description: "Release time", constructor: ParseTextFrame},
+		"TDRC": FrameType{id: "TDRC", description: "Recording time", constructor: ParseTextFrame},
 		"TDLY": FrameType{id: "TDLY", description: "Playlist delay", constructor: ParseTextFrame},
 		"TENC": FrameType{id: "TENC", description: "Encoded by", constructor: ParseTextFrame},
 		"TEXT": FrameType{id: "TEXT", description: "Lyricist/Text writer", constructor: ParseTextFrame},
@@ -125,14 +129,18 @@ func ParseV23Frame(reader io.Reader) Framer {
 		return nil
 	}
 
-	id := string(data[:4])
+	id := string(bytes.Trim(data[:4], "\x00"))
 	t, ok := V23FrameTypeMap[id]
 	if !ok {
-		return nil
+		t = FrameType{id: id, description: "Unknown frame", constructor: ParseDataFrame}
 	}
 
 	size, err := encodedbytes.NormInt(data[4:8])
 	if err != nil {
+		return nil
+	}
+
+	if id == "" && size == 0 {
 		return nil
 	}
 

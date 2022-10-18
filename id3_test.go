@@ -11,7 +11,7 @@ import (
 	"os"
 	"testing"
 
-	v2 "github.com/arkhipovkm/id3-go/v2"
+	v2 "github.com/ghenry22/id3-go/v2"
 )
 
 const (
