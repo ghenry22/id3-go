@@ -89,6 +89,10 @@ func TestOpen(t *testing.T) {
 		t.Errorf("Open: incorrect album, %v", s)
 	}
 
+	if s := tag.Track(); s != "11\x00" {
+		t.Errorf("Open: incorrect track, %v", s)
+	}
+
 	parsedFrame := file.Frame("COMM")
 	resultFrame, ok := parsedFrame.(*v2.UnsynchTextFrame)
 	if !ok {

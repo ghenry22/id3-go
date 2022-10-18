@@ -22,6 +22,8 @@ var (
 		"Year":     V22FrameTypeMap["TYE"],
 		"Genre":    V22FrameTypeMap["TCO"],
 		"Comments": V22FrameTypeMap["COM"],
+		"Track":    V22FrameTypeMap["TRK"],
+		"AlbumArtist":    V22FrameTypeMap["TP2"],
 	}
 
 	// V22FrameTypeMap specifies the frame IDs and constructors allowed in ID3v2.2

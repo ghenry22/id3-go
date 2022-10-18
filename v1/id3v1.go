@@ -87,6 +87,16 @@ func (t Tag) Comments() []string {
 	return []string{t.comment}
 }
 
+// v1 does not support track
+func (t Tag) Track() string {
+	return ""
+}
+
+// v1 does not support album artist
+func (t Tag) AlbumArtist() string {
+	return ""
+}
+
 func (t *Tag) SetTitle(text string) {
 	t.title = text
 	t.dirty = true
@@ -116,6 +126,16 @@ func (t *Tag) SetGenre(text string) {
 		}
 	}
 	t.dirty = true
+}
+
+// v1 does not support track
+func (t *Tag) SetTrack(text string) {
+	return
+}
+
+// v1 does not support album artist
+func (t *Tag) SetAlbumArtist(text string) {
+	return
 }
 
 func (t Tag) Bytes() []byte {
